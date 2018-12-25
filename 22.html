@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="div">
+        <p class="p1">1</p>
+        <p>2</p>
+        <p>3</p>
+    </div>
+    <button class="btn">点击</button>
+</body>
+</html>
+
+<script>
+;(function(win,doc){
+    var sxdTools = {
+        // class选择一个标签元素
+        $:function(ele){
+            return document.querySelector(ele);
+        },
+        // class选择多个标签元素
+        $$:function(ele){
+            return document.querySelectorAll(ele);
+        },
+        // 判断浏览器类型
+        browserType:function(){
+            var browser = window.navigator.userAgent;
+            if (browser.indexOf("Opera") > -1) {
+                return "Opera"
+            }
+            if (browser.indexOf("Firefox") > -1) {
+                return "Firefox"
+            }
+            if (browser.indexOf("Chrome") > -1) {
+                return "Chrome"
+            }
+            if (browser.indexOf("Safari") > -1) {
+                return "Safari"
+            }
+            if (browser.indexOf("compatible") && browser.indexOf("MSIE") > -1 && !isOpera) {
+                return "IE"
+            }
+        },
+        // 判断终端类型
+        terminalType:function(){
+            var browser = window.navigator.userAgent;
+            if (browser.indexOf("Android") > -1) {
+                return "Android"
+            }
+            if (browser.indexOf("iPhone") > -1) {
+                return "iPhone"
+            }
+        },
+        // 移除所有节点
+        removeNode:function(ele){
+            for (let index = 0; index < ele.length; index++) {
+                ele[index].parentNode.removeChild(ele[index]);
+            }
+        },
+        // 清空所有子元素
+        emptyChildEle:function(ele){
+            ele.innerHTML='';
+        },
+        // 获取子元素
+        getChildNodes:function(ele){
+            var childNodes = [];
+            var node = ele.childNodes;
+            for (let index = 0; index < node.length; index++) {
+                if (node[index].nodeType == 1) {
+                    childNodes.push(node[index]);
+                }
+            }
+            return childNodes;
+        },
+        // 获取所有兄弟元素、
+        getSiblingElems:function(ele){
+            var result = [],
+                parentNode = ele.parentNode,
+                childNodes = parentNode.childNodes;
+            for (let index = 0; index < childNodes.length; index++) {
+                if (childNodes[index].nodeType == 1 && childNodes[index] != ele) {
+                    result.push(childNodes[index])
+                }
+            }
+            return result;
+        },
+        //获取元素对应的元素数组的索引
+        getIndex:function(ele,targetE){
+            var result;
+            for (let index = 0; index < ele.length; index++) {
+                if (ele[index] == targetE) {
+                    result = index
+                }
+            }
+            return result;
+        },
+        //获取下一个兄弟元素
+        nextSiblingElem:function(ele){
+            var siblings = this.getChildNodes(ele.parentNode);
+            var index = this.getIndex(siblings,ele);
+            var result = siblings[parseInt(index)+1];
+            return result;
+        }
+
+    }
+    win.sxdTools = sxdTools;
+})(window,document)
+</script>
+<script>
+    sxdTools.$(".btn").onclick = function(){
+        var p = sxdTools.$(".p1")
+        var parr = sxdTools.$$("p")
+        console.log(sxdTools.nextSiblingElem(p))
+        
+    }
+</script>
